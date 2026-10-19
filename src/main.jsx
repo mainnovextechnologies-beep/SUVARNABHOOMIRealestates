@@ -1,0 +1,109 @@
+import React, { useMemo, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { ArrowDownRight, ArrowRight, Building2, Check, ChevronDown, ChevronLeft, ChevronRight, Clock3, Compass, Home, MapPin, Menu, Phone, ShieldCheck, Sparkles, Star, Trees, X, MessageCircle, Copy, ExternalLink, Heart, SlidersHorizontal } from 'lucide-react';
+import './styles.css';
+
+const company = {
+  name: 'SUVARNABHOOMI Developers Pvt Ltd',
+  phone: '+91 90300 05019',
+  address: '#106, Sarathee Shelters, Air Bypass Road, beside PLR Convention Centre, Tirupati, Andhra Pradesh 517501, India.',
+  maps: 'https://www.google.com/maps/search/?api=1&query=SUVARNABHOOMI+Developers+Pvt+Ltd+Tirupati',
+  whatsapp: 'https://wa.me/919030005019?text=Hello%20SUVARNABHOOMI%20Developers%2C%20I%20am%20interested%20in%20your%20properties%20in%20Tirupati.'
+};
+const gallery = [
+  {src:'/images/entrance-sign.png', title:'A welcoming entrance', type:'Community'},
+  {src:'/images/gated-community.png', title:'Landscaped community approach', type:'Community'},
+  {src:'/images/clubhouse.png', title:'Contemporary shared spaces', type:'Architecture'},
+  {src:'/images/brochure.png', title:'Suvarna Sampada brochure', type:'Brochure'},
+  {src:'/images/saraswati-statue.png', title:'A landmark of inspiration', type:'Landmarks'},
+  {src:'/images/community-road.png', title:'Green streetscapes', type:'Community'}
+];
+const services = [
+  {icon:Building2,title:'Residential Apartments',desc:'Explore apartment options in Tirupati and request current availability, layouts and specifications.'},
+  {icon:Compass,title:'TUDA Open Plots',desc:'Enquire about residential plot options and ask the team to clarify project and approval details.'},
+  {icon:Trees,title:'Gated Communities',desc:'Discover community-focused settings, landscaped approaches and residential possibilities.'},
+  {icon:ShieldCheck,title:'Property Enquiry Assistance',desc:'Get clear information to help you compare options and plan your next steps.'},
+  {icon:Home,title:'Landowner Development',desc:'Discuss land development opportunities and partnership enquiries with the team.'},
+  {icon:Sparkles,title:'Real Estate Consultation',desc:'Share your preferences and request property information tailored to your needs.'}
+];
+const reviews = [
+  {quote:'Good service and good developments',source:'Review excerpt supplied from the business listing'},
+  {quote:'Good development, low price..',source:'Review excerpt supplied from the business listing'},
+  {quote:'We are planning to give our land for developing but they are not responding',source:'Review excerpt supplied from the business listing'}
+];
+
+function App(){
+  const [menuOpen,setMenuOpen]=useState(false);
+  const [notice,setNotice]=useState('');
+  const [activeImage,setActiveImage]=useState(null);
+  const [filter,setFilter]=useState('All');
+  const [query,setQuery]=useState('');
+  const [category,setCategory]=useState('All property types');
+  const [favourites,setFavourites]=useState([]);
+  const [form,setForm]=useState({name:'',phone:'',interest:'Apartments',message:''});
+  const [submitted,setSubmitted]=useState(false);
+  const filteredGallery=useMemo(()=>gallery.filter(g=>(filter==='All'||g.type===filter)&&g.title.toLowerCase().includes(query.toLowerCase())),[filter,query]);
+  const demoAction=(feature)=>setNotice(`${feature} will be fully connected on the live website. This is a demo preview, so no call, WhatsApp message or navigation has been started. Thank you for understanding.`);
+  const jump=(id)=>{setMenuOpen(false);document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});};
+  const submitForm=(e)=>{e.preventDefault();setSubmitted(true);setNotice('Enquiry form preview: submissions are not sent or stored in this demo. On the live website, this form should connect to a secure company email or CRM.');};
+  return <div className="site">
+    <div className="topbar"><span><MapPin size={14}/> Tirupati, Andhra Pradesh</span><span className="top-right"><span className="status-dot"/> Property enquiries by appointment <i/> <span>Mon–Sat · Hours to be confirmed</span></span></div>
+    <header className="header">
+      <a className="brand" href="#home" onClick={e=>{e.preventDefault();jump('home')}} aria-label="SUVARNABHOOMI home">
+        <span className="brand-mark"><Building2 size={25}/></span><span><b>SUVARNABHOOMI</b><small>DEVELOPERS PVT LTD</small></span>
+      </a>
+      <button className="mobile-menu" onClick={()=>setMenuOpen(!menuOpen)} aria-label={menuOpen?'Close menu':'Open menu'}>{menuOpen?<X/>:<Menu/>}</button>
+      <nav className={menuOpen?'nav open':'nav'}>
+        {['About Us','Properties','Services','Gallery','Reviews','Contact'].map((n,i)=><button key={n} onClick={()=>jump(['about','properties','services','gallery','reviews','contact'][i])}>{n}</button>)}
+        <button className="nav-cta" onClick={()=>jump('contact')}>Enquire Now <ArrowRight size={16}/></button>
+      </nav>
+    </header>
+    <main>
+      <section className="hero" id="home">
+        <div className="hero-bg"></div><div className="hero-shade"></div>
+        <div className="hero-content">
+          <div className="eyebrow light"><span></span> A place to belong · Tirupati</div>
+          <h1>Find your place.<br/><em>Build your tomorrow.</em></h1>
+          <p>Explore residential apartments, open plots and gated community options with SUVARNABHOOMI Developers.</p>
+          <div className="hero-actions"><button className="btn gold" onClick={()=>jump('properties')}>Explore properties <ArrowRight size={17}/></button><button className="btn outline-light" onClick={()=>jump('about')}>Discover our approach <ArrowDownRight size={17}/></button></div>
+          <div className="hero-note"><span className="note-icon"><ShieldCheck size={18}/></span><span><b>Make an informed choice</b><small>Ask our team for current availability and verified project details.</small></span></div>
+        </div>
+        <div className="hero-side"><span>RESIDENTIAL LIVING</span><i></i><span>01 / TIRUPATI</span></div>
+        <button className="scroll-cue" onClick={()=>jump('about')} aria-label="Scroll to about section"><span>SCROLL TO EXPLORE</span><ChevronDown size={16}/></button>
+      </section>
+      <section className="intro section" id="about">
+        <div className="intro-image"><img src="/images/entrance-sign.png" alt="SUVARNABHOOMI Developers entrance sign and landscaped frontage"/><div className="image-caption"><span>01</span><span>Thoughtfully planned spaces</span></div></div>
+        <div className="intro-copy"><div className="eyebrow"><span></span> Welcome to Suvarnabhoomi</div><h2>Building trust.<br/><em>Creating tomorrow.</em></h2><p className="lead">Your property journey deserves clear information, thoughtful guidance and a team that listens.</p><p>SUVARNABHOOMI Developers Pvt Ltd helps property seekers explore residential options in Tirupati—from apartments and TUDA open plots to gated community flats. Tell us what matters to you and request details directly from our team.</p><button className="text-link" onClick={()=>jump('services')}>Explore what we do <ArrowRight size={17}/></button>
+          <div className="intro-stats"><div><b>01</b><span>Local property enquiries</span></div><div><b>02</b><span>Residential options</span></div><div><b>03</b><span>Direct team contact</span></div></div>
+        </div>
+      </section>
+      <section className="property-section section" id="properties">
+        <div className="section-head"><div><div className="eyebrow"><span></span> Find your fit</div><h2>Explore property <em>possibilities.</em></h2></div><p>Browse our property categories and ask our team about current listings, prices, sizes and project documentation.</p></div>
+        <div className="search-panel"><div className="search-icon"><SlidersHorizontal size={19}/></div><div className="search-field"><label>PROPERTY INTEREST</label><select value={category} onChange={e=>setCategory(e.target.value)}><option>All property types</option><option>Apartments</option><option>TUDA Open Plots</option><option>Gated Community Flats</option><option>Landowner Development</option></select></div><div className="search-field"><label>PREFERRED LOCATION</label><div className="location-value"><MapPin size={16}/> Tirupati, Andhra Pradesh</div></div><button className="btn dark" onClick={()=>{setNotice(`Property search selected: ${category}. This demo does not contain verified live inventory. Please enquire for current options.`);jump('contact')}}>Find properties <ArrowRight size={16}/></button></div>
+        <div className="property-grid">
+          <article className="property-card"><div className="property-photo"><img src="/images/gated-community.png" alt="Landscaped gated community entrance"/><span className="property-tag">RESIDENTIAL</span><span className="property-number">01</span></div><div className="property-info"><div className="property-meta"><span><MapPin size={14}/> Tirupati</span><span>Property category</span></div><h3>Gated Community Options</h3><p>Explore community living and request details about available homes and amenities.</p><div className="card-bottom"><span className="price">Price on request</span><button className="round-arrow" onClick={()=>{setForm({...form,interest:'Gated Community Flats'});jump('contact')}} aria-label="Enquire about gated community"><ArrowRight/></button></div></div></article>
+          <article className="property-card"><div className="property-photo"><img src="/images/community-road.png" alt="Tree-lined residential community road"/><span className="property-tag">OPEN PLOTS</span><span className="property-number">02</span></div><div className="property-info"><div className="property-meta"><span><MapPin size={14}/> Tirupati</span><span>Property category</span></div><h3>TUDA Open Plots</h3><p>Ask for plot dimensions, location, availability and applicable approval information.</p><div className="card-bottom"><span className="price">Price on request</span><button className="round-arrow" onClick={()=>{setForm({...form,interest:'TUDA Open Plots'});jump('contact')}} aria-label="Enquire about open plots"><ArrowRight/></button></div></div></article>
+          <article className="property-card"><div className="property-photo"><img src="/images/clubhouse.png" alt="Contemporary architectural community space"/><span className="property-tag">APARTMENTS</span><span className="property-number">03</span></div><div className="property-info"><div className="property-meta"><span><MapPin size={14}/> Tirupati</span><span>Property category</span></div><h3>Residential Apartments</h3><p>Request apartment layouts, available configurations and current project details.</p><div className="card-bottom"><span className="price">Price on request</span><button className="round-arrow" onClick={()=>{setForm({...form,interest:'Apartments'});jump('contact')}} aria-label="Enquire about apartments"><ArrowRight/></button></div></div></article>
+        </div>
+        <p className="inventory-note"><ShieldCheck size={16}/> These are property categories and illustrative photographs, not confirmed live listings. Availability, project names, approvals and prices must be confirmed with the company.</p>
+      </section>
+      <section className="statement"><div className="statement-img"><img src="/images/saraswati-statue.png" alt="Sculpture in a landscaped open space"/></div><div className="statement-copy"><div className="eyebrow light"><span></span> More than a property search</div><h2>A place to grow.<br/><em>A future to shape.</em></h2><p>Every property decision starts with the right questions. We welcome enquiries from home seekers, plot buyers and landowners interested in development discussions.</p><button className="btn gold" onClick={()=>jump('contact')}>Start a conversation <ArrowRight size={17}/></button></div></section>
+      <section className="services section" id="services"><div className="section-head"><div><div className="eyebrow"><span></span> How we can help</div><h2>Property services, <em>made clearer.</em></h2></div><p>Start with your goals. Our team can share available information and help you understand the next steps.</p></div><div className="services-grid">{services.map((s,i)=>{const Icon=s.icon;return <article className="service-card" key={s.title}><div className="service-top"><span className="service-icon"><Icon size={22}/></span><span className="service-index">0{i+1}</span></div><h3>{s.title}</h3><p>{s.desc}</p><button className="text-link" onClick={()=>{setForm({...form,interest:s.title==='Residential Apartments'?'Apartments':s.title==='TUDA Open Plots'?'TUDA Open Plots':s.title==='Gated Communities'?'Gated Community Flats':s.title});jump('contact')}}>Enquire about this <ArrowRight size={15}/></button></article>})}</div></section>
+      <section className="gallery-section section" id="gallery"><div className="section-head"><div><div className="eyebrow"><span></span> A visual introduction</div><h2>Spaces that inspire. <em>Details that matter.</em></h2></div><p>Explore the photographs shared for this website preview. Images are illustrative and should be matched to verified project details before publication.</p></div>
+        <div className="gallery-tools"><div className="filter-tabs">{['All','Community','Architecture','Brochure','Landmarks'].map(t=><button key={t} className={filter===t?'active':''} onClick={()=>setFilter(t)}>{t}</button>)}</div><input value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search gallery..." aria-label="Search gallery"/></div>
+        <div className="gallery-grid">{filteredGallery.map((g,i)=><button className={`gallery-item gallery-${i%3}`} key={g.src} onClick={()=>setActiveImage(g)}><img src={g.src} alt={g.title} loading="lazy"/><span className="gallery-overlay"><span>{g.type}</span><b>{g.title}</b><span className="gallery-open"><ExternalLink size={16}/></span></span></button>)}</div>
+        {filteredGallery.length===0&&<p className="empty-state">No gallery images match that search. Try a different word or category.</p>}
+      </section>
+      <section className="reviews section" id="reviews"><div className="reviews-heading"><div className="eyebrow light"><span></span> Customer feedback</div><h2>Every conversation<br/>helps us <em>do better.</em></h2><p>Business-listing rating and review excerpts provided for this preview. Check the live listing for the latest feedback.</p><button className="btn outline-light" onClick={()=>demoAction('Google Maps and review links')}>View Google listing <ExternalLink size={16}/></button></div><div className="reviews-content"><div className="rating-block"><div className="rating-number">4.8<span>/5</span></div><div><div className="stars">★★★★★</div><p>26 Google reviews · supplied listing information</p></div></div><div className="review-list">{reviews.map((r,i)=><article className="review-card" key={i}><div className="review-stars">★★★★★</div><p>“{r.quote}”</p><small>{r.source}</small></article>)}</div><button className="review-link" onClick={()=>demoAction('Google review link')}>Read reviews on Google <ArrowRight size={16}/></button></div></section>
+      <section className="contact section" id="contact"><div className="contact-copy"><div className="eyebrow"><span></span> Let's talk property</div><h2>Your next step<br/><em>starts here.</em></h2><p>Tell us what you are looking for. In the live website, this form can be connected to the company’s secure enquiry system.</p><div className="contact-detail"><span className="detail-icon"><MapPin size={19}/></span><div><b>Visit our office</b><p>{company.address}</p><button className="text-link" onClick={()=>demoAction('Location and directions')}>View location <ArrowRight size={15}/></button></div></div><div className="contact-detail"><span className="detail-icon"><Phone size={19}/></span><div><b>Speak with our team</b><p>{company.phone}</p><button className="text-link" onClick={()=>demoAction('Call')}>Call the team <ArrowRight size={15}/></button></div></div><div className="contact-detail"><span className="detail-icon"><Clock3 size={19}/></span><div><b>Office hours</b><p>Please confirm current business hours with the company.</p></div></div></div>
+        <form className="contact-form" onSubmit={submitForm}><div className="form-heading"><span>ENQUIRY FORM</span><h3>How can we help you?</h3><p>Fields marked * are required.</p></div><div className="form-row"><label>Full name *<input required minLength="2" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} placeholder="Your name"/></label><label>Mobile number *<input required pattern="[6-9][0-9]{9}" title="Enter a valid 10-digit Indian mobile number" value={form.phone} onChange={e=>setForm({...form,phone:e.target.value.replace(/\D/g,'').slice(0,10)})} placeholder="10-digit mobile number" inputMode="numeric"/></label></div><label>Property interest *<select required value={form.interest} onChange={e=>setForm({...form,interest:e.target.value})}><option>Apartments</option><option>TUDA Open Plots</option><option>Gated Community Flats</option><option>Landowner Development</option><option>Real Estate Consultation</option></select></label><label>Message (optional)<textarea rows="4" value={form.message} onChange={e=>setForm({...form,message:e.target.value})} placeholder="Tell us what you're looking for..."/></label><label className="consent"><input type="checkbox" required/> <span>I agree to be contacted about my enquiry.</span></label><button className="btn dark submit-btn" type="submit">Submit enquiry <ArrowRight size={17}/></button><p className="form-disclaimer">Demo preview: your details are not sent or stored. A secure backend must be configured for live enquiries.</p>{submitted&&<div className="form-status"><Check size={17}/> Preview validated. No information has been transmitted.</div>}</form>
+      </section>
+    </main>
+    <footer className="footer"><div className="footer-main"><div className="footer-brand"><a className="brand brand-light" href="#home" onClick={e=>{e.preventDefault();jump('home')}}><span className="brand-mark"><Building2 size={25}/></span><span><b>SUVARNABHOOMI</b><small>DEVELOPERS PVT LTD</small></span></a><p>Your Property Journey Starts Here.</p><p className="footer-small">Property availability, pricing, approvals and specifications must be confirmed directly with the company.</p></div><div><h4>EXPLORE</h4><button onClick={()=>jump('about')}>About us</button><button onClick={()=>jump('properties')}>Properties</button><button onClick={()=>jump('services')}>Services</button><button onClick={()=>jump('gallery')}>Gallery</button></div><div><h4>PROPERTY TYPES</h4><button onClick={()=>{setForm({...form,interest:'Apartments'});jump('contact')}}>Apartments</button><button onClick={()=>{setForm({...form,interest:'TUDA Open Plots'});jump('contact')}}>TUDA open plots</button><button onClick={()=>{setForm({...form,interest:'Gated Community Flats'});jump('contact')}}>Gated communities</button><button onClick={()=>jump('contact')}>Landowner enquiries</button></div><div><h4>CONTACT</h4><p>{company.address}</p><button onClick={()=>demoAction('Call')}>{company.phone}</button><button onClick={()=>demoAction('Location and directions')}>Location & directions</button><button onClick={()=>demoAction('WhatsApp')}>WhatsApp enquiry</button></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} SUVARNABHOOMI Developers Pvt Ltd</span><span>Designed for clarity. Built around your next move.</span></div></footer>
+    <div className="floating-actions"><button className="float-btn whatsapp" onClick={()=>demoAction('WhatsApp')} aria-label="WhatsApp enquiry"><MessageCircle size={22}/><span>WhatsApp</span></button><button className="float-btn call" onClick={()=>demoAction('Call')} aria-label="Call SUVARNABHOOMI"><Phone size={21}/><span>Call</span></button><button className="float-btn location" onClick={()=>demoAction('Location and directions')} aria-label="View location"><MapPin size={21}/><span>Location</span></button></div>
+    <div className="mobile-bar"><button onClick={()=>demoAction('Call')}><Phone size={18}/> Call</button><button onClick={()=>demoAction('WhatsApp')}><MessageCircle size={18}/> WhatsApp</button><button onClick={()=>demoAction('Location and directions')}><MapPin size={18}/> Location</button></div>
+    {notice&&<div className="notice-backdrop" role="presentation" onClick={()=>setNotice('')}><div className="notice-modal" role="dialog" aria-modal="true" aria-labelledby="notice-title" onClick={e=>e.stopPropagation()}><button className="modal-close" onClick={()=>setNotice('')} aria-label="Close message"><X size={19}/></button><span className="notice-icon"><ShieldCheck size={25}/></span><h3 id="notice-title">Thank you for your interest</h3><p>{notice}</p><button className="btn dark" onClick={()=>setNotice('')}>Got it <Check size={16}/></button></div></div>}
+    {activeImage&&<div className="lightbox" role="dialog" aria-modal="true" aria-label="Gallery image" onClick={()=>setActiveImage(null)}><button className="lightbox-close" onClick={()=>setActiveImage(null)} aria-label="Close gallery"><X/></button><button className="lightbox-prev" onClick={e=>{e.stopPropagation();let i=gallery.findIndex(x=>x.src===activeImage.src);setActiveImage(gallery[(i-1+gallery.length)%gallery.length])}} aria-label="Previous image"><ChevronLeft/></button><img src={activeImage.src} alt={activeImage.title} onClick={e=>e.stopPropagation()}/><button className="lightbox-next" onClick={e=>{e.stopPropagation();let i=gallery.findIndex(x=>x.src===activeImage.src);setActiveImage(gallery[(i+1)%gallery.length])}} aria-label="Next image"><ChevronRight/></button><div className="lightbox-caption">{activeImage.title}</div></div>}
+  </div>
+}
+createRoot(document.getElementById('root')).render(<App/>);
